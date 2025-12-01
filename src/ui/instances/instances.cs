@@ -13,7 +13,14 @@ namespace TermL
                 showOptions($"Instances {curPage}/{pages.Count-1}",pages[curPage].ToArray(), "Back", new string[] {"Next","Prev","Create Instance"});
                 char choice = getChar();
 
-                if (choice >= '1' && choice <= '4') continue;
+                if (choice >= '1' && choice <= '4')
+                {
+                    int index = choice - '1';
+                    if (index < pages[curPage].Count)
+                    {
+                        TermLComp.Instances.UI.Instance(pages[curPage][index]);
+                    }
+                }
 
                 switch (choice)
                 {
@@ -28,6 +35,7 @@ namespace TermL
                     case 'c':
                         TermLComp.Instances.UI.createInstance();
                         pages = TermLComp.Instances.Methods.init();
+                        TermLComp.Instances.UI.Instance(pages[0][0]);
                         break;
                 }
             }
