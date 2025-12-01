@@ -25,6 +25,9 @@ namespace TermLComp.Instances
                 pages.Add(page);
             }
 
+            if (pages.Count == 0)
+                pages.Add(new List<string>());
+
             return pages;
         }
     }

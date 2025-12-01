@@ -27,6 +27,7 @@ namespace TermL
                         break;
                     case 'c':
                         TermLComp.Instances.UI.createInstance();
+                        pages = TermLComp.Instances.Methods.init();
                         break;
                 }
             }
