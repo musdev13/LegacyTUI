@@ -1,5 +1,3 @@
-using System.Diagnostics;
-
 namespace LegacyTUIComp.Instances
 {
     public partial class UI
@@ -9,44 +7,32 @@ namespace LegacyTUIComp.Instances
             string instancePath = Path.Combine(Path.Combine(LegacyTUIComp.Methods.WorkspaceDir(),"instances"),instanceName);
             string? instanceVersion = LegacyTUIComp.Methods.GetFromFile(Path.Combine(instancePath,"LegacyTUI_data"),0);
 
-            Console.Clear();
-            Console.WriteLine($"{instanceName}\nversion: {instanceVersion}");
+            while (true)
+            {
+                Console.Clear();
+                LegacyTUIComp.UI.showOptions($"{instanceName}\nversion: {instanceVersion}", new string[] {"Run Instant","Run Launcher (Recommended for first run)","Mods","Change name","","Delete instance"},"Back");
+                char choice = LegacyTUIComp.UI.getChar();
+
+                switch (choice)
+                {
+                    case '0':
+                        return;
+                    case '1':
+                        LegacyTUIComp.Instances.Methods.runMC(instancePath, instanceVersion!, true);
+                        break;
+                    case '2':
+                        LegacyTUIComp.Instances.Methods.runMC(instancePath, instanceVersion!, false);
+                        break;
+                    case '4':
+                        LegacyTUIComp.Instances.Methods.changeName(instancePath);
+                        return;
+                    case '6':
+                        if (LegacyTUIComp.Instances.Methods.deleteInstance(instanceName,instancePath)) return;
+                        else break;
+                        
+                }
+            }
             
-            string command = "java";
-            string args = $"-jar \"{Path.Combine(LegacyTUIComp.Methods.WorkspaceDir(), "bootstrap.jar")}\" --launch --directory \"{instancePath}\" --version \"{instanceVersion}\"";
-            Console.WriteLine($"{command} {args}");
-
-            var psi = new ProcessStartInfo()
-            {
-                FileName = command,
-                Arguments = args,
-                UseShellExecute = false,
-                RedirectStandardOutput = true,
-                RedirectStandardError = true,
-                CreateNoWindow = true
-            };
-
-            using var process = new Process();
-            process.StartInfo = psi;
-
-            process.OutputDataReceived += (_, e) =>
-            {
-                if (e.Data != null)
-                    Console.WriteLine(e.Data);
-            };
-
-            process.ErrorDataReceived += (_, e) =>
-            {
-                if (e.Data != null)
-                    Console.WriteLine("Error: " + e.Data);
-            };
-
-            process.Start();
-
-            process.BeginOutputReadLine();
-            process.BeginErrorReadLine();
-
-            process.WaitForExit();
         }
     }
 }

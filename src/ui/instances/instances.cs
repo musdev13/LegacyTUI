@@ -19,6 +19,7 @@ namespace LegacyTUI
                     if (index < pages[curPage].Count)
                     {
                         LegacyTUIComp.Instances.UI.Instance(pages[curPage][index]);
+                        pages = LegacyTUIComp.Instances.Methods.init();
                     }
                 }
 
