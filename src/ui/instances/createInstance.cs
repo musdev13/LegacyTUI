@@ -177,6 +177,84 @@ namespace LegacyTUIComp.Instances
             }
             return versionstr;
         }
+
+        private static string getForgeVersion()
+        {
+            Console.Clear();
+            Console.WriteLine("Fetching LegacyLauncher version list");
+            string json = LegacyTUIComp.Methods.getJson("https://repo.llaun.ch/versions/versions.json");
+            using JsonDocument doc = JsonDocument.Parse(json);
+            JsonElement root = doc.RootElement;
+            JsonElement versions = root.GetProperty("versions");
+            List<McVersion> versionList = new List<McVersion>();
+            foreach (JsonElement version in versions.EnumerateArray())
+            {
+                if (version.TryGetProperty("id", out JsonElement idElem) &&
+                    version.TryGetProperty("type", out JsonElement typeElem))
+                {
+                    string id = idElem.GetString()!;
+                    string type = typeElem.GetString()!;
+
+                    if (!string.IsNullOrEmpty(id) && id.Contains("Forge", StringComparison.OrdinalIgnoreCase))
+                    {
+                        versionList.Add(new McVersion
+                        {
+                            Id = id,
+                            Type = type
+                        });
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Skipped version: missing id or type");
+                }
+            }
+
+
+            int pageSize = 6;
+            List<List<McVersion>> pages = new List<List<McVersion>>();
+            for (int i = 0; i < versionList.Count; i += pageSize)
+            {
+                pages.Add(versionList.Skip(i).Take(pageSize).ToList());
+            }
+            List<List<string>> pagesPrint = new List<List<string>>();
+            for (int i = 0; i < versionList.Count; i += pageSize)
+            {
+                var page = versionList.Skip(i)
+                                      .Take(pageSize)
+                                      .Select(v => $"{v.Id} - {v.Type}")
+                                      .ToList();
+                pagesPrint.Add(page);
+            }
+
+            bool running = true;
+            string versionstr="";
+            int curPage = 0;
+
+            while (running){
+                Console.Clear();
+                LegacyTUIComp.UI.showOptions($"Forge versions {curPage}/{pages.Count-1}",pagesPrint[curPage].ToArray(),"",new string[] {"Next","Prev"});
+                char choice = LegacyTUIComp.UI.getChar();
+
+                if (choice >= '1' && choice <= '6')
+                {
+                    int index = choice - '1';
+                    versionstr = pages[curPage][index].Id;
+                    running = false;
+                    continue;
+                }
+                switch (choice)
+                {
+                    case 'a':
+                        if (curPage+1 <= pagesPrint.Count-1) curPage++;
+                        break;
+                    case 'b':
+                        if (curPage-1 >= 0) curPage--;
+                        break;
+                }
+            }
+            return versionstr;
+        }
         public static (string version, string tag) getInstanceVersion()
         {
             bool running = true;
@@ -199,7 +277,7 @@ namespace LegacyTUIComp.Instances
                         running = false;
                         break;
                     case '3': // Forge
-                        version = "";
+                        version = getForgeVersion();
                         tag = "forge";
                         running = false;
                         break;
