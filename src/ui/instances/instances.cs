@@ -1,12 +1,12 @@
-using static TermLComp.UI;
+using static LegacyTUIComp.UI;
 
-namespace TermL
+namespace LegacyTUI
 {
     public partial class UI
     {
         public static void Instances()
         {
-            var pages = TermLComp.Instances.Methods.init();
+            var pages = LegacyTUIComp.Instances.Methods.init();
             int curPage = 0;
             while(true){
                 Console.Clear();
@@ -18,7 +18,7 @@ namespace TermL
                     int index = choice - '1';
                     if (index < pages[curPage].Count)
                     {
-                        TermLComp.Instances.UI.Instance(pages[curPage][index]);
+                        LegacyTUIComp.Instances.UI.Instance(pages[curPage][index]);
                     }
                 }
 
@@ -33,9 +33,9 @@ namespace TermL
                         if (curPage-1 >= 0) curPage--;
                         break;
                     case 'c':
-                        TermLComp.Instances.UI.createInstance();
-                        pages = TermLComp.Instances.Methods.init();
-                        TermLComp.Instances.UI.Instance(pages[0][0]);
+                        LegacyTUIComp.Instances.UI.createInstance();
+                        pages = LegacyTUIComp.Instances.Methods.init();
+                        LegacyTUIComp.Instances.UI.Instance(pages[0][0]);
                         break;
                 }
             }

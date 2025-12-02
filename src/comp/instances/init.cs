@@ -1,10 +1,10 @@
-namespace TermLComp.Instances
+namespace LegacyTUIComp.Instances
 {
     public partial class Methods
     {
         public static List<List<string>> init()
         {
-            string workspace = TermLComp.Methods.WorkspaceDir();
+            string workspace = LegacyTUIComp.Methods.WorkspaceDir();
             string instancesPath = Path.Combine(workspace, "instances");
 
             // Создаём папку instances, если её нет

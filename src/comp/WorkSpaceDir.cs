@@ -1,7 +1,7 @@
 using System;
 using System.IO;
 
-namespace TermLComp
+namespace LegacyTUIComp
 {
     public partial class Methods
     {

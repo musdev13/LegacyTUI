@@ -1,7 +1,7 @@
 using System.Net.NetworkInformation;
 using System.Text.Json;
 
-namespace TermLComp.Instances
+namespace LegacyTUIComp.Instances
 {
     public partial class UI
     {
@@ -15,7 +15,7 @@ namespace TermLComp.Instances
                 input = Console.ReadLine();
                 if (!string.IsNullOrWhiteSpace(input)) break;
                 Console.WriteLine("Empty Name!\npress any key");
-                TermLComp.UI.getChar();
+                LegacyTUIComp.UI.getChar();
             }
             input = input.Trim();
             while (input.Contains("  "))
@@ -34,7 +34,7 @@ namespace TermLComp.Instances
         {
             Console.Clear();
             Console.WriteLine("Fetching mojang version list");
-            string json = TermLComp.Methods.getJson("https://launchermeta.mojang.com/mc/game/version_manifest.json");
+            string json = LegacyTUIComp.Methods.getJson("https://launchermeta.mojang.com/mc/game/version_manifest.json");
             using JsonDocument doc = JsonDocument.Parse(json);
             JsonElement root = doc.RootElement;
             JsonElement versions = root.GetProperty("versions");
@@ -77,8 +77,8 @@ namespace TermLComp.Instances
 
             while (running){
                 Console.Clear();
-                TermLComp.UI.showOptions($"Vanila versions {curPage}/{pages.Count-1}",pagesPrint[curPage].ToArray(),"",new string[] {"Next","Prev"});
-                char choice = TermLComp.UI.getChar();
+                LegacyTUIComp.UI.showOptions($"Vanila versions {curPage}/{pages.Count-1}",pagesPrint[curPage].ToArray(),"",new string[] {"Next","Prev"});
+                char choice = LegacyTUIComp.UI.getChar();
 
                 if (choice >= '1' && choice <= '6')
                 {
@@ -105,8 +105,8 @@ namespace TermLComp.Instances
             string version="";
             while (running){
                 Console.Clear();
-                TermLComp.UI.showOptions("Select Loader", new string[] {"Vanila","Fabric","Forge"}, "");
-                char choice = TermLComp.UI.getChar();
+                LegacyTUIComp.UI.showOptions("Select Loader", new string[] {"Vanila","Fabric","Forge"}, "");
+                char choice = LegacyTUIComp.UI.getChar();
                 switch (choice)
                 {
                     case '1': // vanila
@@ -130,13 +130,13 @@ namespace TermLComp.Instances
         {
             string input = InputInstanceName();
             string version = getInstanceVersion();
-            string instancesPath = Path.Combine(TermLComp.Methods.WorkspaceDir(),"instances");
+            string instancesPath = Path.Combine(LegacyTUIComp.Methods.WorkspaceDir(),"instances");
             string instancePath = Path.Combine(instancesPath,input);
 
             Directory.CreateDirectory(instancePath);
-            TermLComp.Methods.SetFromFile(Path.Combine(instancePath,"TermL_data"),new string[] {version});
+            LegacyTUIComp.Methods.SetFromFile(Path.Combine(instancePath,"LegacyTUI_data"),new string[] {version});
 
-            // TermLComp.UI.getChar();
+            // LegacyTUIComp.UI.getChar();
         }
     }
 }

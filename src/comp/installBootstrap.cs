@@ -1,4 +1,4 @@
-namespace TermLComp
+namespace LegacyTUIComp
 {
     public partial class Methods{
         public static void installBootstrap()

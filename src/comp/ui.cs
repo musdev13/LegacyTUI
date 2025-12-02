@@ -1,6 +1,6 @@
 using System;
 
-namespace TermLComp
+namespace LegacyTUIComp
 {
     public class UI
     {

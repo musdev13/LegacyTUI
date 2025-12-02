@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace TermL
+namespace LegacyTUI
 {
-    class TermL
+    class LegacyTUI
     {
         static void Main()
         {

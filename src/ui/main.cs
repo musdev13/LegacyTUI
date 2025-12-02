@@ -1,6 +1,6 @@
-using static TermLComp.UI;
+using static LegacyTUIComp.UI;
 
-namespace TermL
+namespace LegacyTUI
 {
     public partial class UI
     {
@@ -8,13 +8,13 @@ namespace TermL
         {
             while(true){
                 Console.Clear();
-                showOptions("TermLegacy",new string[] {"Instances","Install/Update Legacy Launcher"},"Exit");
+                showOptions("LegacyTUI",new string[] {"Instances","Install/Update Legacy Launcher"},"Exit");
                 char choice = getChar();
 
                 switch (choice)
                 {
                     case '2':
-                        TermLComp.Methods.installBootstrap();
+                        LegacyTUIComp.Methods.installBootstrap();
                         break;
                     case '1':
                         Instances();

@@ -1,6 +1,6 @@
 using System.Net;
 
-namespace TermLComp
+namespace LegacyTUIComp
 {
     public partial class Methods
     {

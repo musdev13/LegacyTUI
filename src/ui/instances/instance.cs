@@ -1,19 +1,19 @@
 using System.Diagnostics;
 
-namespace TermLComp.Instances
+namespace LegacyTUIComp.Instances
 {
     public partial class UI
     {
         public static void Instance(string instanceName)
         {
-            string instancePath = Path.Combine(Path.Combine(TermLComp.Methods.WorkspaceDir(),"instances"),instanceName);
-            string? instanceVersion = TermLComp.Methods.GetFromFile(Path.Combine(instancePath,"TermL_data"),0);
+            string instancePath = Path.Combine(Path.Combine(LegacyTUIComp.Methods.WorkspaceDir(),"instances"),instanceName);
+            string? instanceVersion = LegacyTUIComp.Methods.GetFromFile(Path.Combine(instancePath,"LegacyTUI_data"),0);
 
             Console.Clear();
             Console.WriteLine($"{instanceName}\nversion: {instanceVersion}");
             
             string command = "java";
-            string args = $"-jar \"{Path.Combine(TermLComp.Methods.WorkspaceDir(), "bootstrap.jar")}\" --launch --directory \"{instancePath}\" --version \"{instanceVersion}\"";
+            string args = $"-jar \"{Path.Combine(LegacyTUIComp.Methods.WorkspaceDir(), "bootstrap.jar")}\" --launch --directory \"{instancePath}\" --version \"{instanceVersion}\"";
             Console.WriteLine($"{command} {args}");
 
             var psi = new ProcessStartInfo()
