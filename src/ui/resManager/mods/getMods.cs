@@ -78,7 +78,7 @@ namespace LegacyTUI.resManager.mods.global
                         string filename = file.GetProperty("filename").GetString()!;
                         global::LegacyTUIComp.Methods.DownloadFile(url, Path.Combine(modsFolder, filename));
 
-                        // Console.WriteLine("Installing dependencies...");
+                        Console.WriteLine("Installing dependencies...");
                         JsonElement dependencies = element.GetProperty("dependencies");
                         foreach (JsonElement dependency in dependencies.EnumerateArray())
                         {
