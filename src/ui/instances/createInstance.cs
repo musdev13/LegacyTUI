@@ -72,12 +72,13 @@ namespace LegacyTUIComp.Instances
             // }
 
             bool running = true;
-            string versionstr="";
+            string versionstr = "";
             int curPage = 0;
 
-            while (running){
+            while (running)
+            {
                 Console.Clear();
-                LegacyTUIComp.UI.showOptions($"Vanila versions {curPage}/{pages.Count-1}",pagesPrint[curPage].ToArray(),"",new string[] {"Next","Prev"});
+                LegacyTUIComp.UI.showOptions($"Vanila versions {curPage}/{pages.Count - 1}", pagesPrint[curPage].ToArray(), "", new string[] { "Next", "Prev" });
                 char choice = LegacyTUIComp.UI.getChar();
 
                 if (choice >= '1' && choice <= '6')
@@ -90,10 +91,10 @@ namespace LegacyTUIComp.Instances
                 switch (choice)
                 {
                     case 'a':
-                        if (curPage+1 <= pagesPrint.Count-1) curPage++;
+                        if (curPage + 1 <= pagesPrint.Count - 1) curPage++;
                         break;
                     case 'b':
-                        if (curPage-1 >= 0) curPage--;
+                        if (curPage - 1 >= 0) curPage--;
                         break;
                 }
             }
@@ -150,12 +151,13 @@ namespace LegacyTUIComp.Instances
             }
 
             bool running = true;
-            string versionstr="";
+            string versionstr = "";
             int curPage = 0;
 
-            while (running){
+            while (running)
+            {
                 Console.Clear();
-                LegacyTUIComp.UI.showOptions($"Fabric versions {curPage}/{pages.Count-1}",pagesPrint[curPage].ToArray(),"",new string[] {"Next","Prev"});
+                LegacyTUIComp.UI.showOptions($"Fabric versions {curPage}/{pages.Count - 1}", pagesPrint[curPage].ToArray(), "", new string[] { "Next", "Prev" });
                 char choice = LegacyTUIComp.UI.getChar();
 
                 if (choice >= '1' && choice <= '6')
@@ -168,10 +170,10 @@ namespace LegacyTUIComp.Instances
                 switch (choice)
                 {
                     case 'a':
-                        if (curPage+1 <= pagesPrint.Count-1) curPage++;
+                        if (curPage + 1 <= pagesPrint.Count - 1) curPage++;
                         break;
                     case 'b':
-                        if (curPage-1 >= 0) curPage--;
+                        if (curPage - 1 >= 0) curPage--;
                         break;
                 }
             }
@@ -228,12 +230,13 @@ namespace LegacyTUIComp.Instances
             }
 
             bool running = true;
-            string versionstr="";
+            string versionstr = "";
             int curPage = 0;
 
-            while (running){
+            while (running)
+            {
                 Console.Clear();
-                LegacyTUIComp.UI.showOptions($"Forge versions {curPage}/{pages.Count-1}",pagesPrint[curPage].ToArray(),"",new string[] {"Next","Prev"});
+                LegacyTUIComp.UI.showOptions($"Forge versions {curPage}/{pages.Count - 1}", pagesPrint[curPage].ToArray(), "", new string[] { "Next", "Prev" });
                 char choice = LegacyTUIComp.UI.getChar();
 
                 if (choice >= '1' && choice <= '6')
@@ -246,10 +249,10 @@ namespace LegacyTUIComp.Instances
                 switch (choice)
                 {
                     case 'a':
-                        if (curPage+1 <= pagesPrint.Count-1) curPage++;
+                        if (curPage + 1 <= pagesPrint.Count - 1) curPage++;
                         break;
                     case 'b':
-                        if (curPage-1 >= 0) curPage--;
+                        if (curPage - 1 >= 0) curPage--;
                         break;
                 }
             }
@@ -258,11 +261,12 @@ namespace LegacyTUIComp.Instances
         public static (string version, string tag) getInstanceVersion()
         {
             bool running = true;
-            string version="";
+            string version = "";
             string tag = "";
-            while (running){
+            while (running)
+            {
                 Console.Clear();
-                LegacyTUIComp.UI.showOptions("Select Loader", new string[] {"Vanila","Fabric","Forge"}, "");
+                LegacyTUIComp.UI.showOptions("Select Loader", new string[] { "Vanila", "Fabric", "Forge" }, "");
                 char choice = LegacyTUIComp.UI.getChar();
                 switch (choice)
                 {
@@ -284,19 +288,20 @@ namespace LegacyTUIComp.Instances
                 }
             }
 
-            return (version,tag);
+            return (version, tag);
         }
         public static void createInstance()
         {
             string input = InputInstanceName();
             var version = getInstanceVersion();
-            string instancesPath = Path.Combine(LegacyTUIComp.Methods.WorkspaceDir(),"instances");
-            string instancePath = Path.Combine(instancesPath,input);
+            string workspaceDir = LegacyTUIComp.Methods.WorkspaceDir();
+            string instancesPath = Path.Combine(workspaceDir, "instances");
+            string instancePath = Path.Combine(instancesPath, input);
 
             Directory.CreateDirectory(instancePath);
-            LegacyTUIComp.Methods.SetFromFile(Path.Combine(instancePath,"LegacyTUI_data"),new string[] {version.version, version.tag});
-
+            LegacyTUIComp.Methods.SetFromFile(Path.Combine(instancePath, "LegacyTUI_data"), new string[] { version.version, version.tag });
             // LegacyTUIComp.UI.getChar();
+            LegacyTUIComp.Methods.updateProfiles(workspaceDir, instancePath);
         }
     }
 }

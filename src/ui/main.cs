@@ -4,11 +4,18 @@ namespace LegacyTUI
 {
     public partial class UI
     {
+        public static void itHasntBeenDoneYet()
+        {
+            Console.Clear();
+            Console.WriteLine("it hasn't been done yet\nPress any key...");
+            getChar();
+        }
         public static void MainMenu()
         {
-            while(true){
+            while (true)
+            {
                 Console.Clear();
-                showOptions("LegacyTUI",new string[] {"Instances","Install/Update Legacy Launcher"},"Exit");
+                showOptions("LegacyTUI", new string[] { "Instances", "Install/Update Legacy Launcher" }, "Exit");
                 char choice = getChar();
 
                 switch (choice)
