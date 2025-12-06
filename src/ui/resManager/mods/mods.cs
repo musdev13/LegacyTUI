@@ -82,6 +82,9 @@ namespace LegacyTUI.resManager.mods
                         mods.global.UI.main(instanceVersion, instanceTag, modsFolder);
                         (pages, modsFolder) = Methods.initModsFolder(instancePath);
                         break;
+                    case 'd':
+                        LegacyTUIComp.Methods.OpenPath(modsFolder);
+                        break;
                 }
             }
         }
