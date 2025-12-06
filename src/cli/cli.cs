@@ -21,6 +21,8 @@ namespace LegacyTUI
             var renameOption = new Option<string>(new[] { "--rename", "-r" }, "Rename Instance to");
             var updateProfilesOption = new Option<bool>("--update-profiles", "Update Profiles");
 
+            var folderOption = new Option<bool>(new[] { "--folder", "-f" }, "Open Instance or Mods Folder");
+
             var modsOption = new Option<bool>(new[] { "--mods", "-m" }, "Mods Management");
             var globalOption = new Option<bool>(new[] { "--global", "-g" }, "Global Search (Modrinth)");
             var searchOption = new Option<string>(new[] { "--search", "-s" }, "Search Query");
@@ -46,6 +48,7 @@ namespace LegacyTUI
             root.AddOption(installOption);
             root.AddOption(disableOption);
             root.AddOption(enableOption);
+            root.AddOption(folderOption);
 
             root.SetHandler((InvocationContext context) =>
             {
@@ -69,6 +72,7 @@ namespace LegacyTUI
                 var installSlug = context.ParseResult.GetValueForOption(installOption);
                 var disableMod = context.ParseResult.GetValueForOption(disableOption);
                 var enableMod = context.ParseResult.GetValueForOption(enableOption);
+                var isFolder = context.ParseResult.GetValueForOption(folderOption);
 
                 try
                 {
@@ -111,6 +115,22 @@ namespace LegacyTUI
                         if (string.IsNullOrEmpty(instanceName))
                         {
                             Console.WriteLine("Error: -i (instance) is required for mods management.");
+                            return;
+                        }
+
+                        if (isFolder)
+                        {
+                            string workspaceDir = LegacyTUIComp.Methods.WorkspaceDir();
+                            string modsPath = Path.Combine(workspaceDir, "instances", instanceName, "mods");
+                            if (Directory.Exists(modsPath))
+                            {
+                                Console.WriteLine($"Opening mod folder: {modsPath}");
+                                LegacyTUIComp.Methods.OpenPath(modsPath);
+                            }
+                            else
+                            {
+                                Console.WriteLine($"Mod folder not found at: {modsPath}");
+                            }
                             return;
                         }
 
@@ -202,6 +222,22 @@ namespace LegacyTUI
 
                             InstanceLogic.CreateInstance(instanceName, version, tag);
                             Console.WriteLine($"Instance {instanceName} created.");
+                            return;
+                        }
+
+                        if (isFolder)
+                        {
+                            string workspaceDir = LegacyTUIComp.Methods.WorkspaceDir();
+                            string instancePath = Path.Combine(workspaceDir, "instances", instanceName);
+                            if (Directory.Exists(instancePath))
+                            {
+                                Console.WriteLine($"Opening instance folder: {instancePath}");
+                                LegacyTUIComp.Methods.OpenPath(instancePath);
+                            }
+                            else
+                            {
+                                Console.WriteLine($"Instance folder not found at: {instancePath}");
+                            }
                             return;
                         }
 
