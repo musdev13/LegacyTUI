@@ -1,5 +1,7 @@
 using System.Net.NetworkInformation;
 using System.Text.Json;
+using LegacyTUIComp.Logic;
+using LegacyTUIComp.Shared;
 
 namespace LegacyTUIComp.Instances
 {
@@ -25,239 +27,7 @@ namespace LegacyTUIComp.Instances
             input = input.Replace(" ", "_");
             return input;
         }
-        public struct McVersion
-        {
-            public string Id { get; set; }
-            public string Type { get; set; }
-        }
-        private static string getVanilaVersion()
-        {
-            Console.Clear();
-            Console.WriteLine("Fetching mojang version list");
-            string json = LegacyTUIComp.Methods.getJson("https://launchermeta.mojang.com/mc/game/version_manifest.json");
-            using JsonDocument doc = JsonDocument.Parse(json);
-            JsonElement root = doc.RootElement;
-            JsonElement versions = root.GetProperty("versions");
-            List<McVersion> versionList = new List<McVersion>();
-            foreach (JsonElement version in versions.EnumerateArray())
-            {
-                versionList.Add(new McVersion
-                {
-                    Id = version.GetProperty("id").GetString()!,
-                    Type = version.GetProperty("type").GetString()!
-                });
-            }
 
-            int pageSize = 6;
-            List<List<McVersion>> pages = new List<List<McVersion>>();
-            for (int i = 0; i < versionList.Count; i += pageSize)
-            {
-                pages.Add(versionList.Skip(i).Take(pageSize).ToList());
-            }
-            List<List<string>> pagesPrint = new List<List<string>>();
-            for (int i = 0; i < versionList.Count; i += pageSize)
-            {
-                var page = versionList.Skip(i)
-                                      .Take(pageSize)
-                                      .Select(v => $"{v.Id} - {v.Type}")
-                                      .ToList();
-                pagesPrint.Add(page);
-            }
-
-            // foreach (JsonElement version in versions.EnumerateArray())
-            // {
-            //     string? id = version.GetProperty("id").GetString();
-            //     string? type = version.GetProperty("type").GetString();
-            //     Console.WriteLine($"{id} ({type})");
-            // }
-
-            bool running = true;
-            string versionstr = "";
-            int curPage = 0;
-
-            while (running)
-            {
-                Console.Clear();
-                LegacyTUIComp.UI.showOptions($"Vanila versions {curPage}/{pages.Count - 1}", pagesPrint[curPage].ToArray(), "", new string[] { "Next", "Prev" });
-                char choice = LegacyTUIComp.UI.getChar();
-
-                if (choice >= '1' && choice <= '6')
-                {
-                    int index = choice - '1';
-                    versionstr = pages[curPage][index].Id;
-                    running = false;
-                    continue;
-                }
-                switch (choice)
-                {
-                    case 'a':
-                        if (curPage + 1 <= pagesPrint.Count - 1) curPage++;
-                        break;
-                    case 'b':
-                        if (curPage - 1 >= 0) curPage--;
-                        break;
-                }
-            }
-            return versionstr;
-        }
-
-        private static string getFabricVersion()
-        {
-            Console.Clear();
-            Console.WriteLine("Fetching LegacyLauncher version list");
-            string json = LegacyTUIComp.Methods.getJson("https://repo.llaun.ch/versions/versions.json");
-            using JsonDocument doc = JsonDocument.Parse(json);
-            JsonElement root = doc.RootElement;
-            JsonElement versions = root.GetProperty("versions");
-            List<McVersion> versionList = new List<McVersion>();
-            foreach (JsonElement version in versions.EnumerateArray())
-            {
-                if (version.TryGetProperty("id", out JsonElement idElem) &&
-                    version.TryGetProperty("type", out JsonElement typeElem))
-                {
-                    string id = idElem.GetString()!;
-                    string type = typeElem.GetString()!;
-
-                    if (!string.IsNullOrEmpty(id) && id.Contains("Fabric", StringComparison.OrdinalIgnoreCase))
-                    {
-                        versionList.Add(new McVersion
-                        {
-                            Id = id,
-                            Type = type
-                        });
-                    }
-                }
-                else
-                {
-                    Console.WriteLine("Skipped version: missing id or type");
-                }
-            }
-
-
-            int pageSize = 6;
-            List<List<McVersion>> pages = new List<List<McVersion>>();
-            for (int i = 0; i < versionList.Count; i += pageSize)
-            {
-                pages.Add(versionList.Skip(i).Take(pageSize).ToList());
-            }
-            List<List<string>> pagesPrint = new List<List<string>>();
-            for (int i = 0; i < versionList.Count; i += pageSize)
-            {
-                var page = versionList.Skip(i)
-                                      .Take(pageSize)
-                                      .Select(v => $"{v.Id} - {v.Type}")
-                                      .ToList();
-                pagesPrint.Add(page);
-            }
-
-            bool running = true;
-            string versionstr = "";
-            int curPage = 0;
-
-            while (running)
-            {
-                Console.Clear();
-                LegacyTUIComp.UI.showOptions($"Fabric versions {curPage}/{pages.Count - 1}", pagesPrint[curPage].ToArray(), "", new string[] { "Next", "Prev" });
-                char choice = LegacyTUIComp.UI.getChar();
-
-                if (choice >= '1' && choice <= '6')
-                {
-                    int index = choice - '1';
-                    versionstr = pages[curPage][index].Id;
-                    running = false;
-                    continue;
-                }
-                switch (choice)
-                {
-                    case 'a':
-                        if (curPage + 1 <= pagesPrint.Count - 1) curPage++;
-                        break;
-                    case 'b':
-                        if (curPage - 1 >= 0) curPage--;
-                        break;
-                }
-            }
-            return versionstr;
-        }
-
-        private static string getForgeVersion()
-        {
-            Console.Clear();
-            Console.WriteLine("Fetching LegacyLauncher version list");
-            string json = LegacyTUIComp.Methods.getJson("https://repo.llaun.ch/versions/versions.json");
-            using JsonDocument doc = JsonDocument.Parse(json);
-            JsonElement root = doc.RootElement;
-            JsonElement versions = root.GetProperty("versions");
-            List<McVersion> versionList = new List<McVersion>();
-            foreach (JsonElement version in versions.EnumerateArray())
-            {
-                if (version.TryGetProperty("id", out JsonElement idElem) &&
-                    version.TryGetProperty("type", out JsonElement typeElem))
-                {
-                    string id = idElem.GetString()!;
-                    string type = typeElem.GetString()!;
-
-                    if (!string.IsNullOrEmpty(id) && id.Contains("Forge", StringComparison.OrdinalIgnoreCase))
-                    {
-                        versionList.Add(new McVersion
-                        {
-                            Id = id,
-                            Type = type
-                        });
-                    }
-                }
-                else
-                {
-                    Console.WriteLine("Skipped version: missing id or type");
-                }
-            }
-
-
-            int pageSize = 6;
-            List<List<McVersion>> pages = new List<List<McVersion>>();
-            for (int i = 0; i < versionList.Count; i += pageSize)
-            {
-                pages.Add(versionList.Skip(i).Take(pageSize).ToList());
-            }
-            List<List<string>> pagesPrint = new List<List<string>>();
-            for (int i = 0; i < versionList.Count; i += pageSize)
-            {
-                var page = versionList.Skip(i)
-                                      .Take(pageSize)
-                                      .Select(v => $"{v.Id} - {v.Type}")
-                                      .ToList();
-                pagesPrint.Add(page);
-            }
-
-            bool running = true;
-            string versionstr = "";
-            int curPage = 0;
-
-            while (running)
-            {
-                Console.Clear();
-                LegacyTUIComp.UI.showOptions($"Forge versions {curPage}/{pages.Count - 1}", pagesPrint[curPage].ToArray(), "", new string[] { "Next", "Prev" });
-                char choice = LegacyTUIComp.UI.getChar();
-
-                if (choice >= '1' && choice <= '6')
-                {
-                    int index = choice - '1';
-                    versionstr = pages[curPage][index].Id;
-                    running = false;
-                    continue;
-                }
-                switch (choice)
-                {
-                    case 'a':
-                        if (curPage + 1 <= pagesPrint.Count - 1) curPage++;
-                        break;
-                    case 'b':
-                        if (curPage - 1 >= 0) curPage--;
-                        break;
-                }
-            }
-            return versionstr;
-        }
         public static (string version, string tag) getInstanceVersion()
         {
             bool running = true;
@@ -266,22 +36,22 @@ namespace LegacyTUIComp.Instances
             while (running)
             {
                 Console.Clear();
-                LegacyTUIComp.UI.showOptions("Select Loader", new string[] { "Vanila", "Fabric", "Forge" }, "");
+                LegacyTUIComp.UI.showOptions("Select Loader", new string[] { "Vanilla", "Fabric", "Forge" }, "");
                 char choice = LegacyTUIComp.UI.getChar();
                 switch (choice)
                 {
-                    case '1': // vanila
-                        version = getVanilaVersion();
-                        tag = "vanila";
+                    case '1': // vanilla
+                        version = SelectVersion(VersionFetcher.GetVanillaVersions(), "Vanilla");
+                        tag = "vanilla";
                         running = false;
                         break;
                     case '2': // Fabric
-                        version = getFabricVersion();
+                        version = SelectVersion(VersionFetcher.GetFabricVersions(), "Fabric");
                         tag = "fabric";
                         running = false;
                         break;
                     case '3': // Forge
-                        version = getForgeVersion();
+                        version = SelectVersion(VersionFetcher.GetForgeVersions(), "Forge");
                         tag = "forge";
                         running = false;
                         break;
@@ -290,6 +60,58 @@ namespace LegacyTUIComp.Instances
 
             return (version, tag);
         }
+
+        private static string SelectVersion(List<McVersion> versionList, string typeName)
+        {
+            int pageSize = 6;
+            List<List<McVersion>> pages = new List<List<McVersion>>();
+            for (int i = 0; i < versionList.Count; i += pageSize)
+            {
+                pages.Add(versionList.Skip(i).Take(pageSize).ToList());
+            }
+            List<List<string>> pagesPrint = new List<List<string>>();
+            for (int i = 0; i < versionList.Count; i += pageSize)
+            {
+                var page = versionList.Skip(i)
+                                      .Take(pageSize)
+                                      .Select(v => $"{v.Id} - {v.Type}")
+                                      .ToList();
+                pagesPrint.Add(page);
+            }
+
+            bool running = true;
+            string versionstr = "";
+            int curPage = 0;
+
+            while (running)
+            {
+                Console.Clear();
+                LegacyTUIComp.UI.showOptions($"{typeName} versions {curPage}/{pages.Count - 1}", pagesPrint[curPage].ToArray(), "", new string[] { "Next", "Prev" });
+                char choice = LegacyTUIComp.UI.getChar();
+
+                if (choice >= '1' && choice <= '6')
+                {
+                    int index = choice - '1';
+                    if (index < pages[curPage].Count)
+                    {
+                        versionstr = pages[curPage][index].Id;
+                        running = false;
+                    }
+                    continue;
+                }
+                switch (choice)
+                {
+                    case 'a':
+                        if (curPage + 1 <= pagesPrint.Count - 1) curPage++;
+                        break;
+                    case 'b':
+                        if (curPage - 1 >= 0) curPage--;
+                        break;
+                }
+            }
+            return versionstr;
+        }
+
         public static void createInstance()
         {
             string input = InputInstanceName();
@@ -300,7 +122,6 @@ namespace LegacyTUIComp.Instances
 
             Directory.CreateDirectory(instancePath);
             LegacyTUIComp.Methods.SetFromFile(Path.Combine(instancePath, "LegacyTUI_data"), new string[] { version.version, version.tag });
-            // LegacyTUIComp.UI.getChar();
             LegacyTUIComp.Methods.updateProfiles(workspaceDir, instancePath);
         }
     }

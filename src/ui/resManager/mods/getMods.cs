@@ -51,7 +51,7 @@ namespace LegacyTUI.resManager.mods.global
             {
                 var page = mods.Skip(i)
                                .Take(pageSize)
-                               .Select(v => $"{v.title} - {v.author}")
+                               .Select(v => $"{v.slug} - {v.title} - {v.author}")
                                .ToList();
                 pagesPrint.Add(page);
             }
