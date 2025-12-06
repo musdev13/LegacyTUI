@@ -77,6 +77,15 @@ namespace LegacyTUI.resManager.mods.global
                         string url = file.GetProperty("url").GetString()!;
                         string filename = file.GetProperty("filename").GetString()!;
                         global::LegacyTUIComp.Methods.DownloadFile(url, Path.Combine(modsFolder, filename));
+
+                        // Console.WriteLine("Installing dependencies...");
+                        JsonElement dependencies = element.GetProperty("dependencies");
+                        foreach (JsonElement dependency in dependencies.EnumerateArray())
+                        {
+                            string dependencyID = dependency.GetProperty("project_id").GetString()!;
+                            installMod(dependencyID, modsFolder, instanceVersion, instanceTag);
+                        }
+
                         return;
                     }
                 }
@@ -88,7 +97,7 @@ namespace LegacyTUI.resManager.mods.global
         public static void ShowMod(Mod mod, string modsFolder, string instanceVersion, string instanceTag)
         {
             Console.Clear();
-            LegacyTUIComp.UI.showOptions($"{mod.title}\n", new string[] { $"author: {mod.author}", $"description: {mod.description}", $"type: {mod.modType}" }, "Back", new string[] { "Install" });
+            LegacyTUIComp.UI.showOptions($"{mod.title}\n", new string[] { $"author: {mod.author}", $"description: {mod.description}", $"mod page: {mod.pageUrl}" }, "Back", new string[] { "Install" });
             char choice = LegacyTUIComp.UI.getChar();
             switch (choice)
             {
