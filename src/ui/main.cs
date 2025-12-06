@@ -21,6 +21,7 @@ namespace LegacyTUI
                 switch (choice)
                 {
                     case '2':
+                        Console.Clear();
                         LegacyTUIComp.Methods.installBootstrap();
                         break;
                     case '1':
