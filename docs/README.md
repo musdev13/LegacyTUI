@@ -22,11 +22,10 @@ LegacyTUI
 - [Installation](#installation)
   - [Binary](#binary)
     - [Dependencies](#dependencies)
-    - [Linux](#linux)
+    - [Installing](#installing)
   - [Build from source](#build-from-source)
     - [Dependencies](#dependencies-1)
-    - [Linux](#linux-1)
-    - [Windows](#windows)
+    - [Building](#building)
 - [Usage](#usage)
   - [Auth](#auth)
   - [Flags](#flags)
@@ -73,8 +72,11 @@ It was created to make creating minecraft instances easier and faster. And you c
 ### Binary
 #### Dependencies
 - Any *Java Runtime Environment* **(JRE)**
-#### Linux
-Download the [latest binary](https://github.com/musdev13/LegacyTUI/releases/download/v1.0.0/legacytui) from [GitHub Releases](https://github.com/musdev13/LegacyTUI/releases).
+#### Installing
+Download the latest binary from [GitHub Releases](https://github.com/musdev13/LegacyTUI/releases).
+
+[Windows](https://github.com/musdev13/LegacyTUI/releases/download/v1.0.0/legacytui.exe) |
+[Linux](https://github.com/musdev13/LegacyTUI/releases/download/v1.0.0/legacytui)
 
 > ⚠️ **Warning:** You need to make directory for legacytui and move the binary there. legacytui will create files and directories in the same directory.
 
@@ -82,7 +84,7 @@ Download the [latest binary](https://github.com/musdev13/LegacyTUI/releases/down
 #### Dependencies
 - .NET Core 10
 - Any *Java Runtime Environment* **(JRE)**
-#### Linux
+#### Building
 1. Clone the repository and cd into
 ```bash
 git clone --depth 1 https://github.com/musdev13/LegacyTUI.git
@@ -90,29 +92,22 @@ cd LegacyTUI
 ```
 
 2. Build the project
+- Linux
 ```bash
 ./publish.sh
 ```
-
-3. Get the `legacytui` binary in `bin/Release/net10.0/linux-x64/publish`
-
-#### Windows
-1. Clone the repository and cd into
-```bash
-git clone --depth 1 https://github.com/musdev13/LegacyTUI.git
-cd LegacyTUI
-```
-
-2. Build the project
+- Windows
 ```bash
 ./publish-win.sh
 ```
 
-3. Get the `legacytui` binary in `bin/Release/net10.0/win-x64/publish`
+3. Get the `legacytui` binary in
+- Linux: `bin/Release/net10.0/linux-x64/publish/legacytui`
+- Windows: `bin/Release/net10.0/win-x64/publish/legacytui.exe`
 
 ## Usage
 ### Auth
-> Launch `bootstrap.jar` with java, login to your account, copy `launcher_profiles.json` and `tlauncher_profiles.json` to the same directory as `legacytui`.
+> Launch `bootstrap.jar` with java, login to your account, copy `launcher_profiles.json` and `tlauncher_profiles.json` from `.minecraft` folder to the same directory as `legacytui`.
 > It will be your default account.  
 ### Flags
 #### Table
