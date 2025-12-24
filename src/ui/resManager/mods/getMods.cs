@@ -82,6 +82,8 @@ namespace LegacyTUI.resManager.mods.global
                         JsonElement dependencies = element.GetProperty("dependencies");
                         foreach (JsonElement dependency in dependencies.EnumerateArray())
                         {
+                            string dependencyType = dependency.GetProperty("dependency_type").GetString()!;
+                            if (dependencyType != "required") continue;
                             string dependencyID = dependency.GetProperty("project_id").GetString()!;
                             installMod(dependencyID, modsFolder, instanceVersion, instanceTag);
                         }
