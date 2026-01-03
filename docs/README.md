@@ -11,6 +11,8 @@ LegacyTUI
 
 **Use [Legacy Launcher (TL Legacy)](https://llaun.ch/) in terminal**
 
+> LegacyTUI will no longer receive updates or support. Instead, please use RML, which is already available on [GitHub](https://github.com/musdev13/rml), and follow the news on [Telegram](https://t.me/cuteemusek/69). 
+
 </div>
 
 <h2>Contents</h2>
